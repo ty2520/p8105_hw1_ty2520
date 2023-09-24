@@ -1,0 +1,97 @@
+---
+title: "HW1"
+author: "Tongxi Yu"
+date: "2023-09-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+#install.packages("moderndive")
+```
+```{r}
+library("moderndive")
+library("ggplot2")
+library("tidyverse")
+```
+load dataset
+```{r}
+data("early_january_weather")
+```
+
+```{r}
+#The dataset is about the hourly meterological data for LGA,, JFK and EWR in Janurary 2023. 
+#important variables:
+#origin: weather station
+#year, month, day, hour: Time of recording.
+#temp, dewp: Temperature and dewpoint in F.
+#humid: Relative humidity.
+#wind_dir, wind_speed, wind_gust: Wind direction (in degrees), speed and gust speed (in mph).
+#precip: Precipitation, in inches.
+#pressure: Sea level pressure in millibars.
+#visib: Visibility in miles.
+#time_hour: Date and hour of the recording as a POSIXct date.
+nrow(early_january_weather)
+ncol(early_january_weather)
+mean(early_january_weather$temp)
+```
+making scatterplot
+```{r}
+p1 <- ggplot(early_january_weather, aes(x = time_hour, y = temp)) + geom_point(aes(color=humid))
+p1
+
+```
+```{r}
+ggsave("temp_scatter.png")
+```
+```{r}
+set.seed(100)
+x <- rnorm(10)
+x
+whether_positive <- x > 0
+char_vec <- c('a','b','c','d','e','f','g','h','i','j')
+fac_vec <- factor(c("level 1","level 1", "level 1", "level 2", "level 2", "level 2", "level 3","level 3","level 3","level 1" ))
+levels(fac_vec)
+df <- data.frame(x, whether_positive,char_vec,fac_vec)
+#df <- expand.grid(levels(fac_vec))
+df
+```
+```{r}
+# mean of a random sample of size 10 from a standard Normal distribution
+df |> 
+  pull(1) |>
+  mean()
+# mean of a logical vector indicating whether elements of the sample are greater than 0
+df |>
+  pull(2) |>
+  mean()
+# mean of a character vector of length 10
+df |>
+  pull(3) |>
+  mean()
+# mean of a factor vector of length 10, with 3 different factor “levels”
+df |>
+  pull(-1) |>
+  mean()
+```
+mean of the random sample of size 10 and the mean of logical vector worked but the mean of a character vector and a factor vector did not work.
+
+```{r}
+df |> 
+  pull(1) |>
+  as.numeric()
+df |> 
+  pull(2) |>
+  as.numeric()
+df |> 
+  pull(3) |>
+  as.numeric()
+df |> 
+  pull(-1) |>
+  as.numeric()
+```
+Character values wasn't successfully transformed to numerical value so it's mean cannot be calculated. The mean() function needs to take in numeric or logical values.
